@@ -1,0 +1,56 @@
+name: CI/CD Workflow
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build application
+        run: npm run build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Deploy to production
+        run: |
+          # Add your deployment commands here
+          # For example:
+          # npm run deploy
+
+      - name: Hit Sample API
+        if: github.ref == 'refs/heads/main'
+        run: |
+          # Add your API request command here
+          # For example:
+          # curl -X POST -H "Authorization: Basic BASE64_ENCODED_CREDENTIALS" -H "Content-Type: application/json" -d '{"payload": "your_payload"}' https://example.com/api
+
+      # You can add additional steps for testing, notifications, etc.
